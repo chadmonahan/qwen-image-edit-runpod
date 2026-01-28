@@ -6,11 +6,32 @@ This handler processes image editing requests using the Qwen-Image-Edit-2511 mod
 import runpod
 import torch
 from PIL import Image
-from diffusers import QwenImageEditPlusPipeline
 import requests
 from io import BytesIO
 import base64
 import os
+import sys
+
+# Debug imports
+print(f"Python version: {sys.version}")
+print(f"PyTorch version: {torch.__version__}")
+print(f"CUDA available: {torch.cuda.is_available()}")
+if torch.cuda.is_available():
+    print(f"CUDA version: {torch.version.cuda}")
+    print(f"GPU: {torch.cuda.get_device_name(0)}")
+
+# Import diffusers and check version
+try:
+    import diffusers
+    print(f"Diffusers version: {diffusers.__version__}")
+    from diffusers import QwenImageEditPlusPipeline
+    print("Successfully imported QwenImageEditPlusPipeline")
+except ImportError as e:
+    print(f"ERROR importing diffusers: {e}")
+    print("Available diffusers pipelines:")
+    import diffusers
+    print([x for x in dir(diffusers) if 'Pipeline' in x])
+    raise
 
 # Global variables for model caching
 pipeline = None
