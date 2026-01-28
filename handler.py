@@ -20,6 +20,22 @@ if torch.cuda.is_available():
     print(f"CUDA version: {torch.version.cuda}")
     print(f"GPU: {torch.cuda.get_device_name(0)}")
 
+# Monkey-patch torch.xpu for older PyTorch versions
+# Diffusers requires torch.xpu but PyTorch 2.2.0 doesn't have it
+if not hasattr(torch, 'xpu'):
+    print("torch.xpu not found, creating mock module for compatibility")
+    class MockXPU:
+        @staticmethod
+        def empty_cache():
+            pass  # No-op for non-XPU systems
+
+        @staticmethod
+        def is_available():
+            return False
+
+    torch.xpu = MockXPU()
+    print("Mock torch.xpu module created successfully")
+
 # Import diffusers and check version
 try:
     import diffusers
