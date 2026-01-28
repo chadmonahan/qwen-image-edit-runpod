@@ -24,13 +24,23 @@ if torch.cuda.is_available():
 try:
     import diffusers
     print(f"Diffusers version: {diffusers.__version__}")
-    from diffusers import QwenImageEditPlusPipeline
-    print("Successfully imported QwenImageEditPlusPipeline")
+
+    # Try importing from top-level first
+    try:
+        from diffusers import QwenImageEditPlusPipeline
+        print("Successfully imported QwenImageEditPlusPipeline from top-level")
+    except (ImportError, AttributeError) as e1:
+        print(f"Top-level import failed: {e1}")
+        print("Trying direct submodule import...")
+        # Try importing directly from submodule
+        from diffusers.pipelines.qwenimage import QwenImageEditPlusPipeline
+        print("Successfully imported QwenImageEditPlusPipeline from submodule")
+
 except ImportError as e:
     print(f"ERROR importing diffusers: {e}")
-    print("Available diffusers pipelines:")
+    print("Available diffusers attributes:")
     import diffusers
-    print([x for x in dir(diffusers) if 'Pipeline' in x])
+    print([x for x in dir(diffusers) if 'Qwen' in x or 'Pipeline' in x][:20])
     raise
 
 # Global variables for model caching
