@@ -67,6 +67,23 @@ if not hasattr(torch, 'xpu'):
     torch.xpu = MockXPU()
     print("Mock torch.xpu module created successfully")
 
+# Monkey-patch torch.distributed.device_mesh for PyTorch 2.2.0 compatibility
+# device_mesh was added in PyTorch 2.3+
+if not hasattr(torch.distributed, 'device_mesh'):
+    print("torch.distributed.device_mesh not found, creating mock module")
+
+    class MockDeviceMesh:
+        """Mock DeviceMesh for PyTorch 2.2.0 compatibility"""
+        def __init__(self, *args, **kwargs):
+            pass
+
+    # Create a mock module
+    from types import ModuleType
+    device_mesh_module = ModuleType('device_mesh')
+    device_mesh_module.DeviceMesh = MockDeviceMesh
+    torch.distributed.device_mesh = device_mesh_module
+    print("Mock torch.distributed.device_mesh created successfully")
+
 # Import diffusers and check version
 try:
     import diffusers
