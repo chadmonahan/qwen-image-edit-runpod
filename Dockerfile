@@ -34,5 +34,8 @@ ENV TRANSFORMERS_CACHE=/runpod-volume/huggingface-cache
 ENV HF_HOME=/runpod-volume/huggingface-cache
 ENV HF_HUB_CACHE=/runpod-volume/huggingface-cache
 
+# Enable PyTorch memory optimization
+ENV PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True
+
 # Run the handler
 CMD ["python", "-u", "handler.py"]
