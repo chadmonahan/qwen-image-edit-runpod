@@ -14,9 +14,9 @@ RUN apt-get update && apt-get install -y \
 # Upgrade pip and install wheel
 RUN pip install --upgrade pip wheel setuptools
 
-# Install diffusers from source (required for QwenImageEditPlusPipeline)
-# PyTorch 2.2.0 is already in the base image and supports torch.xpu
-RUN pip install --no-cache-dir git+https://github.com/huggingface/diffusers
+# Install specific commit of diffusers that has QwenImageEditPlusPipeline but doesn't require torch.xpu
+# Commit b8a4cba is when QwenImageEditPlusPipeline was merged (Dec 15, 2025)
+RUN pip install --no-cache-dir git+https://github.com/huggingface/diffusers.git@b8a4cba
 
 # Install other Python dependencies
 RUN pip install --no-cache-dir \
