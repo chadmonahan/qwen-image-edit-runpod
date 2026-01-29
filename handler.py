@@ -3,17 +3,28 @@ RunPod Serverless Handler for Qwen Image Edit 2511
 This handler processes image editing requests using the Qwen-Image-Edit-2511 model.
 """
 
+# Print immediately to see if script is even running
+print("=" * 80)
+print("HANDLER STARTING")
+print("=" * 80)
+
+import sys
+print(f"Python version: {sys.version}")
+
 import runpod
+print("✓ runpod imported")
+
 import torch
+print(f"✓ torch imported - version: {torch.__version__}")
+
 from PIL import Image
 import requests
 from io import BytesIO
 import base64
 import os
-import sys
 
 # Debug imports
-print(f"Python version: {sys.version}")
+print(f"Python executable: {sys.executable}")
 print(f"PyTorch version: {torch.__version__}")
 print(f"CUDA available: {torch.cuda.is_available()}")
 if torch.cuda.is_available():
