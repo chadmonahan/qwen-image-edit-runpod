@@ -36,7 +36,9 @@ if torch.cuda.is_available():
 if not hasattr(torch, 'xpu'):
     print("torch.xpu not found, creating mock module for compatibility")
     class MockXPU:
-        _is_in_bad_fork = False  # Attribute used by PyTorch internals
+        @staticmethod
+        def _is_in_bad_fork():
+            return False  # Method used by PyTorch internals
 
         @staticmethod
         def empty_cache():
