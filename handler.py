@@ -33,6 +33,10 @@ if not hasattr(torch, 'xpu'):
         def is_available():
             return False
 
+        @staticmethod
+        def device_count():
+            return 0  # No XPU devices on this system
+
     torch.xpu = MockXPU()
     print("Mock torch.xpu module created successfully")
 
