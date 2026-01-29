@@ -37,6 +37,22 @@ if not hasattr(torch, 'xpu'):
         def device_count():
             return 0  # No XPU devices on this system
 
+        @staticmethod
+        def manual_seed(seed):
+            pass  # No-op for non-XPU systems
+
+        @staticmethod
+        def reset_peak_memory_stats(device=None):
+            pass  # No-op for non-XPU systems
+
+        @staticmethod
+        def max_memory_allocated(device=None):
+            return 0  # No XPU memory allocated
+
+        @staticmethod
+        def synchronize(device=None):
+            pass  # No-op for non-XPU systems
+
     torch.xpu = MockXPU()
     print("Mock torch.xpu module created successfully")
 
