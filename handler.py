@@ -92,6 +92,18 @@ if not hasattr(torch.distributed, 'device_mesh'):
     torch.distributed.device_mesh = device_mesh_module
     print("Mock torch.distributed.device_mesh created successfully")
 
+# Monkey-patch torch.is_autocast_enabled for PyTorch 2.2.0 compatibility
+# In PyTorch 2.2.0, is_autocast_enabled() takes no arguments
+# In PyTorch 2.3+, it takes an optional device_type argument
+_original_is_autocast_enabled = torch.is_autocast_enabled
+
+def patched_is_autocast_enabled(device_type=None):
+    """Wrapper to make is_autocast_enabled accept device_type argument for compatibility"""
+    return _original_is_autocast_enabled()
+
+torch.is_autocast_enabled = patched_is_autocast_enabled
+print("Patched torch.is_autocast_enabled to accept device_type argument")
+
 # Import diffusers and check version
 try:
     import diffusers
