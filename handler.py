@@ -1,6 +1,7 @@
 """
 RunPod Serverless Handler for Qwen Image Edit 2511
 This handler processes image editing requests using the Qwen-Image-Edit-2511 model.
+Version: 0.2.6
 """
 
 # Print immediately to see if script is even running
