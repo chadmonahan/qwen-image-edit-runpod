@@ -104,6 +104,26 @@ def patched_is_autocast_enabled(device_type=None):
 torch.is_autocast_enabled = patched_is_autocast_enabled
 print("Patched torch.is_autocast_enabled to accept device_type argument")
 
+# Monkey-patch torch.nn.functional.scaled_dot_product_attention for PyTorch 2.2.0
+# The enable_gqa parameter was added in later PyTorch versions
+_original_sdpa = torch.nn.functional.scaled_dot_product_attention
+
+def patched_scaled_dot_product_attention(query, key, value, attn_mask=None, dropout_p=0.0, is_causal=False, scale=None, enable_gqa=False):
+    """Wrapper to strip enable_gqa parameter for PyTorch 2.2.0 compatibility"""
+    # Call original function without enable_gqa parameter
+    return _original_sdpa(
+        query=query,
+        key=key,
+        value=value,
+        attn_mask=attn_mask,
+        dropout_p=dropout_p,
+        is_causal=is_causal,
+        scale=scale
+    )
+
+torch.nn.functional.scaled_dot_product_attention = patched_scaled_dot_product_attention
+print("Patched torch.nn.functional.scaled_dot_product_attention to strip enable_gqa parameter")
+
 # Import diffusers and check version
 try:
     import diffusers
