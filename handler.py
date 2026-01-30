@@ -57,6 +57,10 @@ if not hasattr(torch, 'xpu'):
             pass  # No-op for non-XPU systems
 
         @staticmethod
+        def manual_seed_all(seed):
+            pass  # No-op for non-XPU systems
+
+        @staticmethod
         def reset_peak_memory_stats(device=None):
             pass  # No-op for non-XPU systems
 
